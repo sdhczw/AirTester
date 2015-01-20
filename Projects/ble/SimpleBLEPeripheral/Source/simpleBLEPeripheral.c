@@ -216,7 +216,7 @@ static uint8 advertData[] =
 };
 
 // GAP GATT Attributes
-static uint8 attDeviceName[] = "PM2.5 Tester";
+static uint8 attDeviceName[] = "PM2.5_TESTER";
 
 /*********************************************************************
  * LOCAL FUNCTIONS
