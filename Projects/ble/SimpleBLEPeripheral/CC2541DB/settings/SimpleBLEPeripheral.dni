@@ -28,10 +28,8 @@ Bp0=_ "STD_CODE" "{$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2541ST\hal_i2c
 Bp1=_ "STD_CODE" "{$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2541ST\hal_i2c.c}.291.3" 0 0 0 0 "" 0 ""
 Bp2=_ "STD_CODE" "{$PROJ_DIR$\..\..\Profiles\SimpleProfile\battservice.c}.561.3" 0 0 0 0 "" 0 ""
 Bp3=_ "STD_CODE" "{$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2541ST\hal_i2c.c}.153.3" 0 0 0 0 "" 0 ""
-Bp4=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.556.3" 1 0 0 0 "" 0 ""
-Bp5=_ "STD_CODE" "{$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_key.c}.559.3" 0 0 0 0 "" 0 ""
-Bp6=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.789.5" 1 0 0 0 "" 0 ""
-Count=7
+Bp4=_ "STD_CODE" "{$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_key.c}.559.3" 0 0 0 0 "" 0 ""
+Count=5
 [ChipconEmu]
 Stop timers on halt=0
 Leave target running=1

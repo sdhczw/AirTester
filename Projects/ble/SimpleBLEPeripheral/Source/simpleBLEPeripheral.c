@@ -381,6 +381,8 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
     SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR5, sizeof ( uint8 ), &charValue5 );
     SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR6, sizeof ( uint8 ), &charValue6 );
     SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR7, sizeof ( uint8 ), &charValue7 );
+    SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR8, SIMPLEPROFILE_CHAR8_LEN, charValue8 );
+    SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR9, sizeof ( uint8 ), &charValue9 );
   }
 
 
