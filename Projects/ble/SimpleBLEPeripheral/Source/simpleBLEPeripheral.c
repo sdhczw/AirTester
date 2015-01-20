@@ -585,9 +585,11 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
 {
 #ifdef PLUS_BROADCASTER
     static uint8 first_conn_flag = 0;
-#endif // PLUS_BROADCASTER
-    
-    
+#endif // PLUS_BROADCASTER#if !defined( CC2540_MINIDK )
+    VOID gapProfileState;     // added to prevent compiler warning with
+    // "CC2540 Slave" configurations
+    gapProfileState = newState;
+
     switch ( newState )
     {
         case GAPROLE_STARTED:
@@ -711,15 +713,7 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
         }
         break;
         
-    }
-    
-    gapProfileState = newState;
-    
-#if !defined( CC2540_MINIDK )
-    VOID gapProfileState;     // added to prevent compiler warning with
-    // "CC2540 Slave" configurations
-#endif
-    
+    }  
     
 }
 
