@@ -368,10 +368,12 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
     uint8 charValue1 = 0;
     uint8 charValue2[SIMPLEPROFILE_CHAR2_LEN] = {0};
     uint8 charValue3 = SBP_PERIODIC_EVT_PERIOD/60000;
-    uint8 charValue4[SIMPLEPROFILE_CHAR2_LEN] = {0};
+    uint8 charValue4[SIMPLEPROFILE_CHAR4_LEN] = {0};
     uint8 charValue5 = 0;
-    uint8 charValue6 = 0;
+    uint8 charValue6 = MEAS_PERIODMEA_OFF;
     uint8 charValue7 = UNKNOWSERSORTYPE;
+    uint8 charValue8[SIMPLEPROFILE_CHAR8_LEN] = {0};
+    uint8 charValue9 = UNCHARGING;
     SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR1, sizeof ( uint8 ), &charValue1 );
     SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR2, SIMPLEPROFILE_CHAR2_LEN, charValue2 );
     SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR3, sizeof ( uint8 ), &charValue3 );
@@ -797,7 +799,8 @@ static void PM25TesterChargePeriodicTask( void )
     {
         g_Chargestatus= CHARGING;
         osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_CHARGE_EVT, SBP_CHARGE_EVT_PERIOD );
-    }    
+    }  
+    SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR9, sizeof ( uint8 ), &g_Chargestatus );
 }
 /*********************************************************************
  * @fn      SimpleBLEBattCB
