@@ -1,0 +1,44 @@
+[Stack]
+FillEnabled=0
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnLogOnly=1
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[DebugChecksum]
+Checksum=-802691427
+[CallStack]
+ShowArgs=0
+[Disassembly]
+MixedMode=1
+[watch_formats]
+Fmt0={W}0:HR01Dataindex	4	0
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[Breakpoints]
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2541ST\hal_i2c.c}.266.3" 0 0 0 0 "" 0 ""
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2541ST\hal_i2c.c}.291.3" 0 0 0 0 "" 0 ""
+Bp2=_ "STD_CODE" "{$PROJ_DIR$\..\..\Profiles\SimpleProfile\battservice.c}.561.3" 0 0 0 0 "" 0 ""
+Bp3=_ "STD_CODE" "{$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2541ST\hal_i2c.c}.153.3" 0 0 0 0 "" 0 ""
+Bp4=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.556.3" 1 0 0 0 "" 0 ""
+Bp5=_ "STD_CODE" "{$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_key.c}.559.3" 0 0 0 0 "" 0 ""
+Bp6=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.789.5" 1 0 0 0 "" 0 ""
+Count=7
+[ChipconEmu]
+Stop timers on halt=0
+Leave target running=1
+[Aliases]
+A0=_ "D:\ti\BLE-CC254x-1.4.0\Components\hal\target\CC2540EB\hal_startup.c" ""
+A1=_ "D:\ti\BLE-CC254x-1.4.0\Projects\ble\Profiles\Roles\gap.c" ""
+A2=_ "D:\ti\BLE-CC254x-1.4.0\Projects\ble\SimpleBLEPeripheral\Source\OSAL_SimpleBLEPeripheral.c" ""
+A3=_ "D:\ti\BLE-CC254x-1.4.0\Projects\ble\SimpleBLEPeripheral\Source\SimpleBLEPeripheral_Main.c" ""
+Count=4
+SuppressDialog=1
