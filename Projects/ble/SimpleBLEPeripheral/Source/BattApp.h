@@ -59,7 +59,7 @@ extern "C"
  * FUNCTIONS
  */
 void HalBattInit(void);
-void HalBattExecMeasurement(uint16 *pBuf);
+bool HalBattExecMeasurement(uint16 *pBuf);
 /*********************************************************************/
 
 #ifdef __cplusplus

@@ -178,7 +178,7 @@ static bStatus_t battWriteAttrCB( uint16 connHandle, gattAttribute_t *pAttr,
 static void battNotifyCB( linkDBItem_t *pLinkItem );
 static uint8 battMeasure( void );
 static void battNotifyLevel( void );
-extern void HalBattExecMeasurement(uint16 *pBuf);
+extern bool HalBattExecMeasurement(uint16 *pBuf);
 /*********************************************************************
  * PROFILE CALLBACKS
  */
@@ -334,7 +334,7 @@ bStatus_t Batt_MeasLevel( void )
   level = battMeasure();
 
   // If level has gone down
-  if (level < battLevel)
+  if (level != battLevel)
   {
     // Update level
     battLevel = level;
@@ -405,13 +405,6 @@ static uint8 battReadAttrCB( uint16 connHandle, gattAttribute_t *pAttr,
        uint8 level;
 
     level = battMeasure();
-
-    // If level has gone down
-    if (level < battLevel)
-    {
-      // Update level
-      battLevel = level;
-    }
 
     *pLen = 1;
     pValue[0] = battLevel;
@@ -507,44 +500,44 @@ static void battNotifyCB( linkDBItem_t *pLinkItem )
  */
 static uint8 battMeasure( void )
 {
-  uint16 adc=0xffff;
-  uint8 percent = 100;
-
-  if (battServiceSetupCB != NULL)
-  {
-    battServiceSetupCB();
-  }
-  HalBattExecMeasurement(&adc);
- if(0xffff!=adc)
- {
-     // Call measurement teardown callback
-     if (battServiceTeardownCB != NULL)
-     {
-         battServiceTeardownCB();
-     }
-     
-     if (adc >= battMaxLevel)
-     {
-         percent = 100;
-     }
-     else if (adc <= battMinLevel)
-     {
-         percent = 0;
-     }
-     else
-     {
-         if (battServiceCalcCB != NULL)
-         {
-             percent = battServiceCalcCB(adc);
-         }
-         else
-         {
-             percent = (uint8) (adc);
-         }
-     }
- }
-
-  return percent;
+    uint16 adc=0xffff;
+    uint8 percent = 100;
+    bool success;
+    if (battServiceSetupCB != NULL)
+    {
+        battServiceSetupCB();
+    }
+    success = HalBattExecMeasurement(&adc);
+    if(success)
+    {
+        // Call measurement teardown callback
+        if (battServiceTeardownCB != NULL)
+        {
+            battServiceTeardownCB();
+        }
+        
+        if (adc >= battMaxLevel)
+        {
+            percent = 100;
+        }
+        else if (adc <= battMinLevel)
+        {
+            percent = 0;
+        }
+        else
+        {
+            if (battServiceCalcCB != NULL)
+            {
+                percent = battServiceCalcCB(adc);
+            }
+            else
+            {
+                percent = (uint8) (adc);
+            }
+        }
+    }
+    
+    return percent;
 }
 
 /*********************************************************************

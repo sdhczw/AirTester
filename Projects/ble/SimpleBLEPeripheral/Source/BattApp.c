@@ -72,8 +72,7 @@ static bool HalBattWriteCmd(uint8 cmd);
 *                                           Local Variables
 * ------------------------------------------------------------------------------------------------
 */
-static uint8 buf[2];                      // Data buffer
-
+static uint8 buf[MAX17040_DATA_LEN];
 /**************************************************************************************************
 * @fn          HalBattInit
 *
@@ -91,35 +90,27 @@ void HalBattInit(void)
 *                                           Private functions
 * -------------------------------------------------------------------------------------------------
 */
-void HalBattExecMeasurement(uint16 *pBuf)
+bool HalBattExecMeasurement(uint16 *pBuf)
 {
-  bool success;
+    bool success;
     /* Send address we're reading from */
-  HalBattInit();
- //  success = HalBattReadData(buf, MAX17040_DATA_LEN); 
-  success = HalBattWriteCmd(MAX17040_MEM_ADDRESS);
-  
-  // Start for humidity read
-  if (success)
-  {
-    *pBuf = buf[0]; 
-
-  }
-  else
-  {
-    *pBuf = 0xffff;
-    return;
-  }
     HalBattInit();
-  success = HalBattReadData(buf, MAX17040_DATA_LEN);
-  
-  // Start for humidity read
-  if (success)
-  {
-    *pBuf = buf[0]; 
-
-  }
-  *pBuf = 0xffff;
+    do
+    {
+        //  success = HalBattReadData(buf, MAX17040_DATA_LEN); 
+        success = HalBattWriteCmd(MAX17040_MEM_ADDRESS);
+        
+        // Start for humidity read
+        if (!success)
+        {
+            break;
+            
+        }
+        HalBattInit();
+        success = HalBattReadData(buf, MAX17040_DATA_LEN);
+        pBuf[0] = buf[0];
+    }while(0);
+    return success;
 }
 
 
