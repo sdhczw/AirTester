@@ -1367,10 +1367,10 @@
           <state>POWER_SAVING</state>
           <state>xPLUS_BROADCASTER</state>
           <state>HAL_LCD=FALSE</state>
-          <state>HAL_LED=TRUE</state>
+          <state>HAL_LED= TRUE</state>
           <state>HAL_I2C=TRUE</state>
           <state>HAL_UART=TRUE</state>
-          <state>HAL_KEY= TRUE</state>
+          <state>HAL_KEY= FALSE</state>
           <state>ZAPP_P1</state>
         </option>
         <option>

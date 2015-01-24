@@ -402,12 +402,8 @@ static uint8 battReadAttrCB( uint16 connHandle, gattAttribute_t *pAttr,
   // Measure battery level if reading level
   if ( uuid == BATT_LEVEL_UUID )
   {
-       uint8 level;
-
-    level = battMeasure();
-
     *pLen = 1;
-    pValue[0] = battLevel;
+    pValue[0] = battMeasure();
   }
   else
   {

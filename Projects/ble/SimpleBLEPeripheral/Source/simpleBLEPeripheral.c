@@ -387,10 +387,10 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
 
 
   //SK_AddService( GATT_ALL_SERVICES ); // Simple Keys Profile
-
+#if (defined HAL_KEY) && (HAL_KEY == TRUE)
   // Register for all key events - This app will handle all key events
-  RegisterForKeys( simpleBLEPeripheral_TaskID );
-
+ RegisterForKeys( simpleBLEPeripheral_TaskID );
+#endif
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)
 
 #if defined FEATURE_OAD
@@ -561,7 +561,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
   {
       HalLedSet(HAL_LED_2,HAL_LED_MODE_ON);
       //The I2C configuration and state is not retained in power modes PM2 and PM3. It must be reconfigured after coming out of sleep mode
-      osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_CHARGE_EVT, DEFAULT_BATT_PERIOD );
+      osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_CHARGE_EVT, SBP_CHARGE_EVT_PERIOD );
 
   }
 
@@ -784,7 +784,7 @@ static void PM25TesterBattPeriodicTask( void )
 static void PM25TesterChargePeriodicTask( void )
 {  
 
-    if(!HAL_PUSH_BUTTON2())//检测引脚如果为0，则认为用户断开充电线，断开充电引脚
+    if(HAL_PUSH_BUTTON2())//检测引脚如果为1，则认为用户断开充电线，断开充电引脚
     {
         //The I2C configuration and state is not retained in power modes PM2 and PM3. It must be reconfigured after coming out of sleep mode
         osal_stop_timerEx( simpleBLEPeripheral_TaskID, SBP_CHARGE_EVT);

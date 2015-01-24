@@ -132,22 +132,7 @@
 
 #else
 
-/* SW_6 is at P0.1 */
-#define HAL_KEY_SW_6_PORT   P0
-#define HAL_KEY_SW_6_BIT    BV(1)
-#define HAL_KEY_SW_6_SEL    P0SEL
-#define HAL_KEY_SW_6_DIR    P0DIR
 
-/* edge interrupt */
-#define HAL_KEY_SW_6_EDGEBIT  BV(0)
-#define HAL_KEY_SW_6_EDGE     HAL_KEY_FALLING_EDGE
-
-/* SW_6 interrupts */
-#define HAL_KEY_SW_6_IEN      IEN1  /* CPU interrupt mask register */
-#define HAL_KEY_SW_6_IENBIT   BV(5) /* Mask bit for all of Port_0 */
-#define HAL_KEY_SW_6_ICTL     P0IEN /* Port Interrupt Control register */
-#define HAL_KEY_SW_6_ICTLBIT  BV(1) /* P0IEN - P0.1 enable/disable bit */
-#define HAL_KEY_SW_6_PXIFG    P0IFG /* Interrupt flag at source */
 
 /* Joy stick move at P2.0 */
 #define HAL_KEY_JOY_MOVE_PORT   P2
@@ -169,11 +154,11 @@
 #define HAL_KEY_JOY_CHN   HAL_ADC_CHANNEL_6
 /* edge interrupt */
 #define HAL_CHARGE_MONITOR_EDGEBIT  BV(1)
-#define HAL_CHARGE_MONITOR_EDGE     HAL_KEY_RISING_EDGE
+#define HAL_CHARGE_MONITOR_EDGE     HAL_KEY_FALLING_EDGE
 
 /* Charge monitor  at P1.2 */
 #define HAL_CHARGE_MONITOR_PORT   P1
-#define HAL_CHARGE_MONITOR_BIT    BV(2)
+#define HAL_CHARGE_MONITOR_BIT    BV(0)
 #define HAL_CHARGE_MONITOR_SEL    P1SEL
 #define HAL_CHARGE_MONITOR_DIR    P1DIR
 
@@ -181,9 +166,11 @@
 #define HAL_CHARGE_MONITOR_IEN      IEN2  /* CPU interrupt mask register */
 #define HAL_CHARGE_MONITOR_IENBIT   BV(4) /* Mask bit for all of Port_1 */
 #define HAL_CHARGE_MONITOR_ICTL     P1IEN /* Port Interrupt Control register */
-#define HAL_CHARGE_MONITOR_ICTLBIT  BV(4) /* P2IENL - P2.0<->P2.3 enable/disable bit */
+#define HAL_CHARGE_MONITOR_ICTLBIT  BV(0) /* P2IENL - P2.0<->P2.3 enable/disable bit */
 #define HAL_CHARGE_MONITOR_PXIFG    P1IFG /* Interrupt flag at source */
 
+#define HAL_CHARGE_MONITOR_PICTL     PICTL /* Port Interrupt Control register */
+#define HAL_CHARGE_MONITOR_PICTLBIT  BV(1) /* P2IENL - P2.0<->P2.3 enable/disable bit */
 #endif
 
 /**************************************************************************************************
@@ -231,8 +218,6 @@ void HalKeyInit( void )
   HAL_KEY_SW_2_SEL &= ~(HAL_KEY_SW_2_BIT);    /* Set pin function to GPIO */
   HAL_KEY_SW_2_DIR &= ~(HAL_KEY_SW_2_BIT);    /* Set pin direction to Input */
 #else
-  HAL_KEY_SW_6_SEL &= ~(HAL_KEY_SW_6_BIT);    /* Set pin function to GPIO */
-  HAL_KEY_SW_6_DIR &= ~(HAL_KEY_SW_6_BIT);    /* Set pin direction to Input */
   
   HAL_KEY_JOY_MOVE_SEL &= ~(HAL_KEY_JOY_MOVE_BIT); /* Set pin function to GPIO */
   HAL_KEY_JOY_MOVE_DIR &= ~(HAL_KEY_JOY_MOVE_BIT); /* Set pin direction to Input */
@@ -253,10 +238,10 @@ void HalKeyInit( void )
   P1IFG &= ~BV(2);
 #if 0
 P1IF = 0; // 中断标志位置 0
-P1SEL &= ~0x04; // 把P1.2的功能设置为 GPIO
-P1DIR &= ~0x04; // 把P1.2设为输入
-P1IEN |= 0x04; // 把P1.2 的中断功能打开
-PICTL &= ~0x01; // 上升沿触发
+P1SEL &= ~0x01; // 把P1.0的功能设置为 GPIO
+P1DIR &= ~0x01; // 把P1.0设为输入
+P1IEN |= 0x01; // 把P1.0 的中断功能打开
+PICTL |= 0x02; // 下降沿触发
 IEN2 |= 0x10; // 使能Port 1 的中断.
 #endif
 #if defined ( CC2540_MINIDK )
@@ -295,22 +280,8 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
     HAL_KEY_SW_2_PXIFG = ~(HAL_KEY_SW_2_BIT);  /* Clear any pending interrupt */
 
 #else
-    /* Rising/Falling edge configuratinn */
-    PICTL &= ~(HAL_KEY_SW_6_EDGEBIT);    /* Clear the edge bit */
-    /* For falling edge, the bit must be set. */
-  #if (HAL_KEY_SW_6_EDGE == HAL_KEY_FALLING_EDGE)
-    PICTL |= HAL_KEY_SW_6_EDGEBIT;
-  #endif
 
 
-    /* Interrupt configuration:
-     * - Enable interrupt generation at the port
-     * - Enable CPU interrupt
-     * - Clear any pending interrupt
-     */
-    HAL_KEY_SW_6_ICTL |= HAL_KEY_SW_6_ICTLBIT;
-    HAL_KEY_SW_6_IEN |= HAL_KEY_SW_6_IENBIT;
-    HAL_KEY_SW_6_PXIFG = ~(HAL_KEY_SW_6_BIT);
 
     /* Rising/Falling edge configuratinn */
     HAL_KEY_JOY_MOVE_ICTL &= ~(HAL_KEY_JOY_MOVE_EDGEBIT);    /* Clear the edge bit */
@@ -332,6 +303,8 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
     HAL_CHARGE_MONITOR_ICTL |= HAL_CHARGE_MONITOR_ICTLBIT;
     HAL_CHARGE_MONITOR_IEN |= HAL_CHARGE_MONITOR_IENBIT;
     HAL_CHARGE_MONITOR_PXIFG = ~(HAL_CHARGE_MONITOR_BIT);
+    
+    HAL_CHARGE_MONITOR_PICTL |= HAL_CHARGE_MONITOR_PICTLBIT;
 #endif // !CC2540_MINIDK
 
     /* Do this only after the hal_key is configured - to work with sleep stuff */
@@ -342,14 +315,6 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
   }
   else    /* Interrupts NOT enabled */
   {
-#if defined ( CC2540_MINIDK )
-    HAL_KEY_SW_1_ICTL &= ~(HAL_KEY_SW_1_ICTLBIT); /* don't generate interrupt */
-    HAL_KEY_SW_2_ICTL &= ~(HAL_KEY_SW_2_ICTLBIT); /* don't generate interrupt */
-#else
-    HAL_KEY_SW_6_ICTL &= ~(HAL_KEY_SW_6_ICTLBIT); /* don't generate interrupt */
-    HAL_KEY_SW_6_IEN &= ~(HAL_KEY_SW_6_IENBIT);   /* Clear interrupt enable bit */
-#endif  // !CC2540_MINIDK
-
     osal_set_event(Hal_TaskID, HAL_KEY_EVENT);
   }
 
@@ -381,15 +346,6 @@ uint8 HalKeyRead ( void )
     keys |= HAL_KEY_SW_2;
   }
 #else
-#ifdef HAL_BOARD_CC2530EB_REV17
-  if ( (HAL_KEY_SW_6_PORT & HAL_KEY_SW_6_BIT))    /* Key is active high */
-#elif defined (HAL_BOARD_CC2530EB_REV13)
-  if (!(HAL_KEY_SW_6_PORT & HAL_KEY_SW_6_BIT))    /* Key is active low */
-#endif
-  {
-    keys |= HAL_KEY_SW_6;
-  }
-
   if ((HAL_KEY_JOY_MOVE_PORT & HAL_KEY_JOY_MOVE_BIT))  /* Key is active low */
   {
     keys |= halGetJoyKeyInput();
@@ -427,11 +383,6 @@ void HalKeyPoll (void)
     keys |= HAL_KEY_SW_2;
   }
 #else
-  if (!(HAL_KEY_SW_6_PORT & HAL_KEY_SW_6_BIT))    /* Key is active low */
-  {
-    keys |= HAL_KEY_SW_6;
-  }
-
   if ((HAL_KEY_JOY_MOVE_PORT & HAL_KEY_JOY_MOVE_BIT))  /* Key is active HIGH */
   {
     keys = halGetJoyKeyInput();
@@ -556,12 +507,6 @@ void halProcessKeyInterrupt (void)
     valid = TRUE;
   }
 #else
-  if (HAL_KEY_SW_6_PXIFG & HAL_KEY_SW_6_BIT)  /* Interrupt Flag has been set */
-  {
-    HAL_KEY_SW_6_PXIFG = ~(HAL_KEY_SW_6_BIT); /* Clear Interrupt Flag */
-    valid = TRUE;
-  }
-
   if (HAL_KEY_JOY_MOVE_PXIFG & HAL_KEY_JOY_MOVE_BIT)  /* Interrupt Flag has been set */
   {
     HAL_KEY_JOY_MOVE_PXIFG = ~(HAL_KEY_JOY_MOVE_BIT); /* Clear Interrupt Flag */
@@ -624,25 +569,7 @@ HAL_ISR_FUNCTION( halKeyPort0Isr, P0INT_VECTOR )
 {
   HAL_ENTER_ISR();
 
-#if defined ( CC2540_MINIDK )
-  if ((HAL_KEY_SW_1_PXIFG & HAL_KEY_SW_1_BIT) || (HAL_KEY_SW_2_PXIFG & HAL_KEY_SW_2_BIT))
-#else
-  if (HAL_KEY_SW_6_PXIFG & HAL_KEY_SW_6_BIT)
-#endif
-  {
-    halProcessKeyInterrupt();
-  }
 
-  /*
-    Clear the CPU interrupt flag for Port_0
-    PxIFG has to be cleared before PxIF
-  */
-#if defined ( CC2540_MINIDK )
-  HAL_KEY_SW_1_PXIFG = 0;
-  HAL_KEY_SW_2_PXIFG = 0;
-#else
-  HAL_KEY_SW_6_PXIFG = 0;
-#endif
   HAL_KEY_CPU_PORT_0_IF = 0;
 
   CLEAR_SLEEP_MODE();
@@ -669,11 +596,7 @@ HAL_ISR_FUNCTION( halKeyPort1Isr, P1INT_VECTOR )
     halProcessKeyInterrupt();
   }
 
-  /*
-    Clear the CPU interrupt flag for Port_2
-    PxIFG has to be cleared before PxIF
-    Notes: P2_1 and P2_2 are debug lines.
-  */
+
   HAL_CHARGE_MONITOR_PXIFG = 0;
   HAL_CHARGE_CPU_PORT_1_IF = 0;
 
