@@ -879,7 +879,7 @@ static void simpleProfileChangeCB( uint8 paramID )
       }  
       else
       {
-         osal_stop_timerEx( simpleBLEPeripheral_TaskID, SBP_BURST_EVT);
+         //osal_stop_timerEx( simpleBLEPeripheral_TaskID, SBP_BURST_EVT);
       }
       break;
     case SIMPLEPROFILE_CHAR6:
@@ -948,6 +948,7 @@ char *bdAddr2Str( uint8 *pAddr )
 static void PM25TesterNotifyHistroy()
 {  
     uint16 i = 0;
+    uint8 newValue = 0;
     uint16 datalen = (g_PM25PeriodCnt*2);
     while(datalen>=SIMPLEPROFILE_CHAR4_LEN)
     {
@@ -959,6 +960,7 @@ static void PM25TesterNotifyHistroy()
     {
         simpleProfile_NofifyChar4Data(PM25PeriodBuffer+i*SIMPLEPROFILE_CHAR4_LEN,datalen);
     }
+    SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR5, sizeof(uint8), &newValue );
 }
 void SensorPowerOn()
 {
