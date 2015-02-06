@@ -179,7 +179,8 @@ void HKPM01AppCallback(uint8 port, uint8 event)
                 //HR01Data[7]= Onboard_rand()%500; 
                 
                SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR2, SIMPLEPROFILE_CHAR2_LEN, HR01Data+4); 
-                if((g_MeasPeriodMode ==MEAS_PERIODMEA_ON)&&(g_PM25WorkCnt++>=g_PM25WorkTime))
+                if((g_MeasPeriodMode ==MEAS_PERIODMEA_ON)&&(g_PM25WorkCnt++>=g_PM25WorkTime)
+                   &&(g_MeasPeriodStatus==MEAS_PERIODMEAING))
                 {
                     
                     g_PM25WorkCnt=0;                  
@@ -187,6 +188,7 @@ void HKPM01AppCallback(uint8 port, uint8 event)
                     PM25PeriodBuffer[g_PM25PeriodCnt*2] = HR01Data[6]; 
                     PM25PeriodBuffer[g_PM25PeriodCnt*2+1] = HR01Data[7]; ; 
                     g_PM25PeriodCnt++;
+                    SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR9, sizeof ( uint8 ), &g_PM25PeriodCnt);
                     g_MeasPeriodStatus= MEAS_PERIODMEA_FINISH;
                     if(gapProfileState!=GAPROLE_CONNECTED)
                     {

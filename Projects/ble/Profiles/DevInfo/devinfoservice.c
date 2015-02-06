@@ -160,7 +160,7 @@ static const uint8 devInfoSerialNumber[] = "0000000001";
 
 // Firmware Revision String characteristic
 static uint8 devInfoFirmwareRevProps = GATT_PROP_READ;
-static const uint8 devInfoFirmwareRev[] = "0000000001";
+static const uint8 devInfoFirmwareRev[] = "0000000003";
 
 // Hardware Revision String characteristic
 static uint8 devInfoHardwareRevProps = GATT_PROP_READ;
@@ -172,7 +172,7 @@ static const uint8 devInfoSoftwareRev[] = "0000000000";
 
 // Manufacturer Name String characteristic
 static uint8 devInfoMfrNameProps = GATT_PROP_READ;
-static const uint8 devInfoMfrName[] = "AbleCloud";
+static const uint8 devInfoMfrName[] = "EMO";
 
 // IEEE 11073-20601 Regulatory Certification Data List characteristic
 static uint8 devInfo11073CertProps = GATT_PROP_READ;

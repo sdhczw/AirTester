@@ -71,8 +71,9 @@
 #include "simpleBLEPeripheral.h"
 
 #if defined FEATURE_OAD
-  #include "oad.h"
-  #include "oad_target.h"
+#include "oad.h"
+#include "oad_target.h"
+#include "hal_flash.h"
 #endif
 #include "SerialApp.h"
 #include "BattApp.h"
@@ -84,11 +85,11 @@
  * CONSTANTS
  */
 // How often to perform periodic event  
-//#define SBP_PERIODIC_EVT_MAX_TIME                   ((uint32)12*60*60*1000) //12 hour
-#define SBP_PERIODIC_EVT_MAX_TIME                   ((uint32)10*60*1000) //1min hour
+#define SBP_PERIODIC_EVT_MAX_TIME                   ((uint32)12*60*60*1000) //12 hour
+//#define SBP_PERIODIC_EVT_MAX_TIME                   ((uint32)10*60*1000) //10min hour
 // How often to perform periodic event  
-//#define SBP_PERIODIC_EVT_PERIOD                   600000 //10 min
-#define SBP_PERIODIC_EVT_PERIOD                     60000 //1min
+#define SBP_PERIODIC_EVT_PERIOD                   600000 //10 min
+//#define SBP_PERIODIC_EVT_PERIOD                     60000 //1min
 // Battery measurement period in ms
 #define DEFAULT_BATT_PERIOD                   3000
 // 4 notifications are sent every 7ms, based on an OSAL timer
@@ -107,11 +108,11 @@
 #define DEFAULT_DISCOVERABLE_MODE             GAP_ADTYPE_FLAGS_GENERAL
 #endif  // defined ( CC2540_MINIDK )
 
-// Minimum connection interval (units of 1.25ms, 80=100ms) if automatic parameter update request is enabled
-#define DEFAULT_DESIRED_MIN_CONN_INTERVAL     80
+// Minimum connection interval (units of 1.25ms, 80=50ms) if automatic parameter update request is enabled
+#define DEFAULT_DESIRED_MIN_CONN_INTERVAL     40
 
-// Maximum connection interval (units of 1.25ms, 800=1000ms) if automatic parameter update request is enabled
-#define DEFAULT_DESIRED_MAX_CONN_INTERVAL     800
+// Maximum connection interval (units of 1.25ms, 80=50ms) if automatic parameter update request is enabled
+#define DEFAULT_DESIRED_MAX_CONN_INTERVAL     40
 
 // Slave latency to use if automatic parameter update request is enabled
 #define DEFAULT_DESIRED_SLAVE_LATENCY         0
@@ -882,27 +883,42 @@ static void simpleProfileChangeCB( uint8 paramID )
          //osal_stop_timerEx( simpleBLEPeripheral_TaskID, SBP_BURST_EVT);
       }
       break;
-    case SIMPLEPROFILE_CHAR6:
+      case SIMPLEPROFILE_CHAR6:
       SimpleProfile_GetParameter( SIMPLEPROFILE_CHAR6, &newValue );
       if(newValue!=MEAS_PERIODMEA_OFF)
       {
           g_MeasPeriodMode = MEAS_PERIODMEA_ON;//Turn on period meas
           // Set timer for first periodic event
-            osal_set_event( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT );
-         // osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT, g_MeasPeriod);
+          osal_set_event( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT );
+          // osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT, g_MeasPeriod);
+          g_PM25PeriodCnt = 0;
+          SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR9, sizeof ( uint8 ), &g_PM25PeriodCnt);
       }
       else
       {
-         g_MeasPeriodMode = MEAS_PERIODMEA_OFF;//Turn off period meas
-                   // Set timer for first periodic event
-         osal_stop_timerEx( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT);
+          g_MeasPeriodMode = MEAS_PERIODMEA_OFF;//Turn off period meas
+          // Set timer for first periodic event
+          osal_stop_timerEx( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT);
       }
-       g_PM25PeriodCnt = 0;
-      #if (defined HAL_LCD) && (HAL_LCD == TRUE)
-        HalLcdWriteStringValue( "Char 1:", (uint16)(newValue), 10,  HAL_LCD_LINE_3 );
-      #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
-
+#if (defined HAL_LCD) && (HAL_LCD == TRUE)
+      HalLcdWriteStringValue( "Char 1:", (uint16)(newValue), 10,  HAL_LCD_LINE_3 );
+#endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
+      
       break;
+#if defined FEATURE_OAD
+      case SIMPLEPROFILE_CHAR10:
+      SimpleProfile_GetParameter( SIMPLEPROFILE_CHAR10, &newValue );
+      if(newValue==OAD_FLAG)
+      {
+          GAPRole_TerminateConnection();           
+          uint16 crc[2] = { 0x0000, 0xFFFF };
+          uint16 addr = OAD_IMG_R_PAGE * ((uint16)(HAL_FLASH_PAGE_SIZE / HAL_FLASH_WORD_SIZE)) + OAD_IMG_CRC_OSET / HAL_FLASH_WORD_SIZE;
+          HalFlashWrite(addr, (uint8 *)crc, 1);
+          //asm("LJMP 0x0830");   
+          HAL_SYSTEM_RESET();
+      }     
+      break;
+#endif
     default:
       // should not reach here!
       break;
