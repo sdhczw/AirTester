@@ -157,28 +157,28 @@ void HKPM01AppCallback(uint8 port, uint8 event)
             } 
             else if(HR01Dataindex==HR01DataLen)
             {
-  
-                 uint8 newValue = 0xff;
+                
+                uint8 newValue = 0xff;
                 if(PM1003_DATALEN==HR01DataLen)
                 {
                     newValue = PM25_PM1003TYPE;
                 }
                 else if(HKPM01_DATALEN==HR01DataLen)
                 {
-                     newValue = PM25_HKPM01TYPE;
+                    newValue = PM25_HKPM01TYPE;
                 }
                 SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR7,  sizeof ( uint8 ), &newValue);              
-                 HR01Dataindex=0;
+                HR01Dataindex=0;
                 cur_type=PKT_UNKNOWN;               
                 ui32CheckSum = (HR01Data[HR01DataLen-2]<<8) + HR01Data[HR01DataLen-1];
                 if(CheckSum(HR01Data, HR01DataLen-2) != (ui32CheckSum & 0xffff))
                 {
                     break;
                 }
-
+                
                 //HR01Data[7]= Onboard_rand()%500; 
                 
-               SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR2, SIMPLEPROFILE_CHAR2_LEN, HR01Data+4); 
+                SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR2, SIMPLEPROFILE_CHAR2_LEN, HR01Data+4); 
                 if((g_MeasPeriodMode ==MEAS_PERIODMEA_ON)&&(g_PM25WorkCnt++>=g_PM25WorkTime)
                    &&(g_MeasPeriodStatus==MEAS_PERIODMEAING))
                 {
@@ -197,7 +197,7 @@ void HKPM01AppCallback(uint8 port, uint8 event)
                         SensorPowerOff();
                     }
                     
-                   HR01DataLen = HR01MAXDATALEN;
+                    HR01DataLen = HR01MAXDATALEN;
                 }
                 
             }

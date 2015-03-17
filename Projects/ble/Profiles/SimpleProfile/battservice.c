@@ -504,7 +504,7 @@ static uint8 battMeasure( void )
         battServiceSetupCB();
     }
     success = HalBattExecMeasurement(&adc);
-    adc = adc*4/3;
+    adc = adc*5/4;
     if(success)
     {
         // Call measurement teardown callback

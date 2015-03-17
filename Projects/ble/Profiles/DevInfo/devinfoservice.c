@@ -156,11 +156,11 @@ static const uint8 devInfoModelNumber[] = "PM2.5_TESTER";
 
 // Serial Number String characteristic
 static uint8 devInfoSerialNumberProps = GATT_PROP_READ;
-static const uint8 devInfoSerialNumber[] = "0000000001";
+static const uint8 devInfoSerialNumber[] = "1.0.0.1";
 
 // Firmware Revision String characteristic
 static uint8 devInfoFirmwareRevProps = GATT_PROP_READ;
-static const uint8 devInfoFirmwareRev[] = "0000000003";
+static const uint8 devInfoFirmwareRev[] = "0000000000";
 
 // Hardware Revision String characteristic
 static uint8 devInfoHardwareRevProps = GATT_PROP_READ;

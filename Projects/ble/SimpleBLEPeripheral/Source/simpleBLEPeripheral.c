@@ -108,10 +108,10 @@
 #define DEFAULT_DISCOVERABLE_MODE             GAP_ADTYPE_FLAGS_GENERAL
 #endif  // defined ( CC2540_MINIDK )
 
-// Minimum connection interval (units of 1.25ms, 80=50ms) if automatic parameter update request is enabled
+// Minimum connection interval (units of 1.25ms, 40=50ms) if automatic parameter update request is enabled
 #define DEFAULT_DESIRED_MIN_CONN_INTERVAL     40
 
-// Maximum connection interval (units of 1.25ms, 80=50ms) if automatic parameter update request is enabled
+// Maximum connection interval (units of 1.25ms, 40=50ms) if automatic parameter update request is enabled
 #define DEFAULT_DESIRED_MAX_CONN_INTERVAL     40
 
 // Slave latency to use if automatic parameter update request is enabled
@@ -337,7 +337,8 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
 
   // Setup the GAP Bond Manager
   {
-    uint32 passkey = 1; // passkey "000001"
+    //uint32 passkey = 780525; // passkey "1"
+    uint32 passkey = 1; // passkey "1"
     uint8 pairMode = GAPBOND_PAIRING_MODE_WAIT_FOR_REQ;
     uint8 mitm = TRUE;
     uint8 ioCap = GAPBOND_IO_CAP_DISPLAY_ONLY;

@@ -22,7 +22,7 @@ typedef enum {
 #define HKPM01_UART_BR                     HAL_UART_BR_9600
 #define HKPM01_UART_PORT   HAL_UART_PORT_1
 #define HR01MAXDATALEN 32
-#define PM25WORKTIME 20 // measure 20 times
+#define PM25WORKTIME 35 // measure 20 times
 #define HR01_DATALENOFFSET 3
 #define HR01_PREFIXLEN 4
 #define PM1003_DATALEN 32

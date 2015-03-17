@@ -58,7 +58,7 @@ extern "C"
 #define MEAS_PERIODMEA_FINISH 1 // Period Finish
 #define CHARGING 1    // 
 #define UNCHARGING 0 //     
-#define OAD_FLAG  1   // OAD ON
+#define OAD_FLAG  0xC7   // OAD ON
 // Simple BLE Peripheral Task Events
 #define SBP_START_DEVICE_EVT                              0x0001
 #define SBP_PERIODIC_EVT                                  0x0002
