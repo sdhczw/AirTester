@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-1087053988
+Checksum=1480989316
 [CallStack]
 ShowArgs=0
 [Disassembly]
@@ -24,19 +24,10 @@ Category=_ 0
 LoggingEnabled=_ 0
 LogFile=_ ""
 [Breakpoints]
-Bp0=_ "STD_CODE" "{$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2541ST\hal_i2c.c}.266.3" 0 0 0 0 "" 0 ""
-Bp1=_ "STD_CODE" "{$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2541ST\hal_i2c.c}.291.3" 0 0 0 0 "" 0 ""
-Bp2=_ "STD_CODE" "{$PROJ_DIR$\..\..\Profiles\SimpleProfile\battservice.c}.551.3" 0 0 0 0 "" 0 ""
-Bp3=_ "STD_CODE" "{$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2541ST\hal_i2c.c}.153.3" 0 0 0 0 "" 0 ""
-Bp4=_ "STD_CODE" "{$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_key.c}.594.3" 0 0 0 0 "" 0 ""
-Bp5=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.792.9" 0 0 0 0 "" 0 ""
-Bp6=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.798.9" 0 0 0 0 "" 0 ""
-Bp7=_ "STD_CODE" "{$PROJ_DIR$\..\Source\SerialApp.c}.161.23" 0 0 0 0 "" 0 ""
-Bp8=_ "STD_CODE" "{$PROJ_DIR$\..\Source\SerialApp.c}.149.13" 0 0 0 0 "" 0 ""
-Bp9=_ "STD_CODE" "{$PROJ_DIR$\..\Source\SerialApp.c}.142.17" 0 0 0 0 "" 0 ""
-Bp10=_ "STD_CODE" "{$PROJ_DIR$\..\Source\BattApp.c}.109.9" 1 0 0 0 "" 0 ""
-Bp11=_ "STD_CODE" "{$PROJ_DIR$\..\..\Profiles\SimpleProfile\battservice.c}.508.5" 1 0 0 0 "" 0 ""
-Count=12
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.634.13" 1 0 0 0 "" 0 ""
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.725.1" 1 0 0 0 "" 0 ""
+Bp2=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.725.19" 1 0 0 0 "" 0 ""
+Count=3
 [ChipconEmu]
 Stop timers on halt=0
 Leave target running=1

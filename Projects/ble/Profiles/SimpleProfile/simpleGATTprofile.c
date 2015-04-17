@@ -247,7 +247,7 @@ static uint8 simpleProfileChar9 = 0;
 static uint8 simpleProfileChar9UserDesp[17] = "Characteristic 9\0";
 
 // Simple Profile Characteristic 10 
-static uint8 simpleProfileChar10Props = GATT_PROP_READ |GATT_PERMIT_AUTHEN_WRITE;
+static uint8 simpleProfileChar10Props = GATT_PROP_READ |GATT_PROP_WRITE;
 
 // Characteristic 10 Value 
 static uint8 simpleProfileChar10 = 0;

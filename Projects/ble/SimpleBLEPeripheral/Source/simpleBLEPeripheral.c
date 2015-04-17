@@ -666,6 +666,10 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)
             HalLcdWriteString( "Connected Advertising",  HAL_LCD_LINE_3 );
 #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
+            uint8 charValue1 = 0;
+            SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR1, sizeof ( uint8 ), &charValue1 );
+            osal_stop_timerEx( simpleBLEPeripheral_TaskID, BATT_PERIODIC_EVT);
+            SensorPowerOff();
         }
         break;    
         case GAPROLE_WAITING:
@@ -690,6 +694,8 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)
             HalLcdWriteString( "Timed Out",  HAL_LCD_LINE_3 );
 #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
+            uint8 charValue1 = 0;
+            SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR1, sizeof ( uint8 ), &charValue1 );
             osal_stop_timerEx( simpleBLEPeripheral_TaskID, BATT_PERIODIC_EVT);
             SensorPowerOff();
 #ifdef PLUS_BROADCASTER
@@ -704,6 +710,10 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)
             HalLcdWriteString( "Error",  HAL_LCD_LINE_3 );
 #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
+            uint8 charValue1 = 0;
+            SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR1, sizeof ( uint8 ), &charValue1 );
+            osal_stop_timerEx( simpleBLEPeripheral_TaskID, BATT_PERIODIC_EVT);
+            SensorPowerOff();
         }
         break;
         
@@ -712,6 +722,10 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)
             HalLcdWriteString( "",  HAL_LCD_LINE_3 );
 #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
+            uint8 charValue1 = 0;
+            SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR1, sizeof ( uint8 ), &charValue1 );
+            osal_stop_timerEx( simpleBLEPeripheral_TaskID, BATT_PERIODIC_EVT);
+            SensorPowerOff();
         }
         break;
         
@@ -898,6 +912,7 @@ static void simpleProfileChangeCB( uint8 paramID )
       else
       {
           g_MeasPeriodMode = MEAS_PERIODMEA_OFF;//Turn off period meas
+          g_MeasPeriodStatus= MEAS_PERIODMEA_FINISH;
           // Set timer for first periodic event
           osal_stop_timerEx( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT);
       }
@@ -992,10 +1007,9 @@ void SensorPowerOff()
     if((MEAS_PERIODMEA_FINISH==g_MeasPeriodStatus)&&(GAPROLE_CONNECTED!=gapProfileState))
     {
         HalLedSet(HAL_LED_1,HAL_LED_MODE_OFF);//set off pm2.5
-        if((UNCHARGING==g_Chargestatus))
-        {
-            HalLedSet(HAL_LED_2,HAL_LED_MODE_OFF);//Power off pm2.5
-        }
+ 
+        HalLedSet(HAL_LED_2,HAL_LED_MODE_OFF);//Power off pm2.5
+        
         osal_pwrmgr_task_state(Hal_TaskID,PWRMGR_CONSERVE);
         osal_pwrmgr_device(PWRMGR_BATTERY);
         HCI_EXT_ClkDivOnHaltCmd( HCI_EXT_ENABLE_CLK_DIVIDE_ON_HALT );
