@@ -714,6 +714,7 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
             SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR1, sizeof ( uint8 ), &charValue1 );
             osal_stop_timerEx( simpleBLEPeripheral_TaskID, BATT_PERIODIC_EVT);
             SensorPowerOff();
+            HAL_SYSTEM_RESET();
         }
         break;
         

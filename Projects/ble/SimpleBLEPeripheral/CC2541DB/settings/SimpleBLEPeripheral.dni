@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=1480989316
+Checksum=-895058598
 [CallStack]
 ShowArgs=0
 [Disassembly]
@@ -25,8 +25,8 @@ LoggingEnabled=_ 0
 LogFile=_ ""
 [Breakpoints]
 Bp0=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.634.13" 1 0 0 0 "" 0 ""
-Bp1=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.725.1" 1 0 0 0 "" 0 ""
-Bp2=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.725.19" 1 0 0 0 "" 0 ""
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.726.19" 1 0 0 0 "" 0 ""
+Bp2=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.726.19" 1 0 0 0 "" 0 ""
 Count=3
 [ChipconEmu]
 Stop timers on halt=0
